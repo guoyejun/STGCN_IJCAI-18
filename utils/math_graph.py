@@ -94,4 +94,4 @@ def weight_matrix(file_path, sigma2=0.1, epsilon=0.5, scaling=True):
         # refer to Eq.10
         return np.exp(-W2 / sigma2) * (np.exp(-W2 / sigma2) >= epsilon) * W_mask
     else:
-        return W
+        return W.astype(float)

@@ -25,7 +25,7 @@ from models.tester import model_test
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--n_route', type=int, default=228)
+parser.add_argument('--n_route', type=int, default=21)
 parser.add_argument('--n_his', type=int, default=12)
 parser.add_argument('--n_pred', type=int, default=9)
 parser.add_argument('--batch_size', type=int, default=50)
@@ -48,7 +48,7 @@ blocks = [[1, 32, 64], [64, 32, 128]]
 
 # Load wighted adjacency matrix W
 if args.graph == 'default':
-    W = weight_matrix(pjoin('./dataset', f'PeMSD7_W_{n}.csv'))
+    W = weight_matrix(pjoin('./dataset', f'gani_w_{n}.csv'))
 else:
     # load customized graph weight matrix
     W = weight_matrix(pjoin('./dataset', args.graph))
@@ -60,9 +60,10 @@ Lk = cheb_poly_approx(L, Ks, n)
 tf.add_to_collection(name='graph_kernel', value=tf.cast(tf.constant(Lk), tf.float32))
 
 # Data Preprocessing
-data_file = f'PeMSD7_V_{n}.csv'
-n_train, n_val, n_test = 34, 5, 5
-PeMS = data_gen(pjoin('./dataset', data_file), (n_train, n_val, n_test), n, n_his + n_pred)
+data_file = f'gani_v_{n}.csv'
+#n_train, n_val, n_test = 34, 5, 5
+#PeMS = data_gen(pjoin('./dataset', data_file), (n_train, n_val, n_test), n, n_his + n_pred)
+PeMS = data_gen2(pjoin('./dataset', data_file), (0.8, 0.1, 0.1), n, n_his + n_pred)
 print(f'>> Loading dataset with Mean: {PeMS.mean:.2f}, STD: {PeMS.std:.2f}')
 
 if __name__ == '__main__':
